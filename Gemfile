@@ -36,7 +36,7 @@ group :test, :development do
   gem 'launchy'
   gem 'rspec-rails'
   gem 'faker'
-  gem 'capybara'
+  # gem 'capybara'
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'selenium-webdriver'
