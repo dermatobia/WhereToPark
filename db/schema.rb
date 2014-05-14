@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 20140514030105) do
   end
 
   create_table "tickets", force: true do |t|
-    t.integer  "fine"
     t.string   "officer"
     t.datetime "incident_time"
     t.string   "status"
@@ -52,7 +51,10 @@ ActiveRecord::Schema.define(version: 20140514030105) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
   create_table "violations", primary_key: "cid", force: true do |t|
-    t.string "description"
+    t.string   "description"
+    t.integer  "fine"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
