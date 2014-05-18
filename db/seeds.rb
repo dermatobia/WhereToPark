@@ -18,20 +18,9 @@ User.create( 	username: "Anonymous",
 							user_type: "A"
 							)
 
-# =========== TEMP DUMMY DATA ================
+# ========== POPULATE LOCATIONS & TICKETS TABLES===========
 
-Location.create(user_submission: "34th street 6th avenue, ny, ny")
-
-time = Time.now
-Ticket.create(	incident_time: time, 
-								violation_id: 4, 
-								user_id: 1,
-								location_id: 1
-							)
-
-# ========== POPULATE LOCATION & TICKETS ===========
-
-# BORO_CODE to translate Violation County (Column 21 in csv table)
+# BORO_CODE to translate Violation County Code (Column 21 in the csv file)
 BORO_CODE = { 		
 							'NY' => 'New York',
 							'BX' => 'Bronx',
@@ -51,16 +40,13 @@ CSV.foreach('./db/Parking_Violations_Issued.csv', :headers => true) do |obj|
 	intersection = obj[25] == nil ? '' : obj[25]
 	county = BORO_CODE[obj[21]]
 	full_address = house_num + ' ' + street_name + ' ' + intersection + ' ' + county
-
 	loc  = Location.create(user_submission: full_address)
 
 	# EXTRACT AND POPULATE TICKET
 	violation_time = obj[19] == nil ? '0000A' : obj[19]
-	
 	violation_time.insert(2, ":").insert(-1, "M")
 	time = obj[4] + ' ' + violation_time + ' EST' 	# In format: "9/18/71 09:50AM EST" 
-	dt = DateTime.strptime(time, '%m/%d/%y %H:%M%P %Z').to_time.localtime
-
+	dt = DateTime.strptime(time, '%m/%d/%y %H:%M%P %Z').to_time.localtime 
 	Ticket.create( 	incident_time: dt,
 									violation_id: obj[5].to_i,
 									user: User.first, 							# The anonymous user
