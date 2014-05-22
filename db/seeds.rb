@@ -28,6 +28,7 @@ BORO_CODE = {
 							'K' => 'Brooklyn',
 							'Q' => 'Queens',
 							'R' => 'Staten Island',
+							'RI' => 'Staten Island',
 							'RICH' => 'Staten Island',
 							nil => 'New York'
 						}
@@ -45,7 +46,7 @@ CSV.foreach('./db/Parking_Violations_Issued.csv', :headers => true) do |obj|
 	# EXTRACT AND POPULATE TICKET
 	violation_time = obj[19] == nil ? '0000A' : obj[19]
 	violation_time.insert(2, ":").insert(-1, "M")
-	time = obj[4] + ' ' + violation_time + ' EST' 	# In format: "9/18/71 09:50AM EST" 
+	p time = obj[4] + ' ' + violation_time + ' EST' 	# In format: "9/18/71 09:50AM EST" 
 	dt = DateTime.strptime(time, '%m/%d/%y %H:%M%P %Z').to_time.localtime 
 	Ticket.create( 	incident_time: dt,
 									violation_id: obj[5].to_i,
